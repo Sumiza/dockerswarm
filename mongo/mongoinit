@@ -1,0 +1,22 @@
+rs.initiate( {
+   _id : "rsmongo",
+   members: [
+      { _id: 0, host: "mongo1:27017" },
+      { _id: 1, host: "mongo2:27017" },
+      { _id: 2, host: "mongo3:27017" },
+      { _id: 3, host: "mongoarb:27017", arbiterOnly: true }
+   ]
+})
+
+
+openssl rand -base64 64 | docker secret create mongosecretkey -
+
+use admin
+db.createUser(
+  {
+    user: 'admin',
+    pwd: passwordPrompt(),
+    roles: [ { role: 'root', db: 'admin' } ]
+  }
+)
+mongodb://admin:Password@mongo1:27017,mongo2:27017,mongo3:27017/?authSource=admin&replicaSet=rsmongo
