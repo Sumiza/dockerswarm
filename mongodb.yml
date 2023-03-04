@@ -1,0 +1,98 @@
+
+version: "3"
+services:
+  mongo1:
+    image: mongo:6
+    secrets:
+       - mongosecretkey
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    volumes:
+      - mongodata1:/data/db
+      - mongodata1config:/data/configdb
+    entrypoint: ["/bin/sh", "-c" , "
+        apt update &&
+        apt upgrade -y &&
+        cp /run/secrets/mongosecretkey /home/mongosecretkey &&
+        chmod 400 /home/mongosecretkey &&
+        chown 999:999 /home/mongosecretkey &&
+        /usr/bin/mongod --keyFile /home/mongosecretkey --auth --replSet rsmongo --bind_ip_all"]
+
+  mongo2:
+    image: mongo:6
+    secrets:
+       - mongosecretkey
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    volumes:
+      - mongodata2:/data/db
+      - mongodata2config:/data/configdb
+    #entrypoint: ["/usr/bin/mongod","--keyFile", "/run/secrets/mongosecretkey", "--replSet", "rsmongo", "--bind_ip_all"]
+    entrypoint: ["/bin/sh", "-c" , "
+        apt update &&
+        apt upgrade -y &&
+        cp /run/secrets/mongosecretkey /home/mongosecretkey &&
+        chmod 400 /home/mongosecretkey &&
+        chown 999:999 /home/mongosecretkey &&
+        /usr/bin/mongod --keyFile /home/mongosecretkey --auth --replSet rsmongo --bind_ip_all"]
+
+  mongo3:
+    image: mongo:6
+    secrets:
+       - mongosecretkey
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    volumes:
+      - mongodata3:/data/db
+      - mongodata3config:/data/configdb
+    entrypoint: ["/bin/sh", "-c" , "
+        apt update &&
+        apt upgrade -y &&
+        cp /run/secrets/mongosecretkey /home/mongosecretkey &&
+        chmod 400 /home/mongosecretkey &&
+        chown 999:999 /home/mongosecretkey &&
+        /usr/bin/mongod --keyFile /home/mongosecretkey --auth --replSet rsmongo --bind_ip_all"]
+  
+  mongoarb:
+    image: mongo:6
+    secrets:
+       - mongosecretkey
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    volumes:
+      - mongodataarb:/data/db
+      - mongodataarbconfig:/data/configdb
+    entrypoint: ["/bin/sh", "-c" , "
+        apt update &&
+        apt upgrade -y &&
+        cp /run/secrets/mongosecretkey /home/mongosecretkey &&
+        chmod 400 /home/mongosecretkey &&
+        chown 999:999 /home/mongosecretkey &&
+        /usr/bin/mongod --keyFile /home/mongosecretkey --auth --replSet rsmongo --bind_ip_all"]
+
+volumes:
+  mongodata1:
+  mongodata2:
+  mongodata3:
+  mongodataarb:
+  mongodata1config:
+  mongodata2config:
+  mongodata3config:
+  mongodataarbconfig:
+
+networks:
+  default:
+    name: mongonet
+    driver: overlay
+    
+secrets:
+   mongosecretkey:
+     external: true
