@@ -2,4 +2,13 @@ iptables -I INPUT 6 -m state --state NEW -p tcp --dport 2377 -j ACCEPT
 iptables -I INPUT 6 -m state --state NEW -p tcp --dport 7946 -j ACCEPT
 iptables -I INPUT 6 -m state --state NEW -p udp --dport 7946 -j ACCEPT
 iptables -I INPUT 6 -m state --state NEW -p udp --dport 4789 -j ACCEPT
+iptables -P FORWARD ACCEPT
+netfilter-persistent save
+
+
+iptables -I INPUT -p tcp --dport 2377 -j ACCEPT
+iptables -I INPUT -p tcp --dport 7946 -j ACCEPT
+iptables -I INPUT -p udp --dport 7946 -j ACCEPT
+iptables -I INPUT -p udp --dport 4789 -j ACCEPT
+iptables -P FORWARD ACCEPT
 netfilter-persistent save
