@@ -15,8 +15,6 @@ services:
       - mongodata1:/data/db
       - mongodata1config:/data/configdb
     entrypoint: ["/bin/sh", "-c" , "
-        apt update &&
-        apt upgrade -y &&
         cp /run/secrets/mongosecretkey /home/mongosecretkey &&
         chmod 400 /home/mongosecretkey &&
         chown 999:999 /home/mongosecretkey &&
@@ -36,8 +34,6 @@ services:
       - mongodata2:/data/db
       - mongodata2config:/data/configdb
     entrypoint: ["/bin/sh", "-c" , "
-        apt update &&
-        apt upgrade -y &&
         cp /run/secrets/mongosecretkey /home/mongosecretkey &&
         chmod 400 /home/mongosecretkey &&
         chown 999:999 /home/mongosecretkey &&
@@ -57,8 +53,6 @@ services:
       - mongodata3:/data/db
       - mongodata3config:/data/configdb
     entrypoint: ["/bin/sh", "-c" , "
-        apt update &&
-        apt upgrade -y &&
         cp /run/secrets/mongosecretkey /home/mongosecretkey &&
         chmod 400 /home/mongosecretkey &&
         chown 999:999 /home/mongosecretkey &&
