@@ -76,6 +76,7 @@ networks:
   default:
     name: mongonet
     driver: overlay
+    attachable: true
     
 secrets:
    mongosecretkey:
